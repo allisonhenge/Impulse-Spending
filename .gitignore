@@ -1,0 +1,10 @@
+.pyc
+*.ipynb_checkpoints/
+*__pycache__/
+*.vscode/
+<<<<<<< HEAD
+<<<<<<< HEAD
+*.DS_store
+*.dump
+db_credentials.py
+2019_sales_by_month.xlsx
