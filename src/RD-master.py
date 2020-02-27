@@ -59,4 +59,4 @@ did you generate or create the excel file for brand/flag
 if __name__ == "__main__":
     sales_filepath='../../capstone2/data/2019_sales_by_month.xlsx'
     brand_and_flag_filepath='../../capstone2/data/hotel_brand_and_flag.xlsx'
-    #flag_groupings_filepath='../='
+    flag_groupings_filepath='../data/flag_groupings.xlsx'
