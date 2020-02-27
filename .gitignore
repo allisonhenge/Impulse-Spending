@@ -8,3 +8,4 @@
 *.dump
 db_credentials.py
 2019_sales_by_month.xlsx
+flag_groupings.xlsx
