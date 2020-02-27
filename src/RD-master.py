@@ -15,10 +15,15 @@ sales_by_month = pd.read_excel(sales_filepath)
 brand_and_flag = pd.read_excel(brand_and_flag_filepath)
 flag_groupings = pd.read_excel(flag_groupings_filepath)
 
+#create performance dataframe with desired columns
+drop_na = sales_by_month.dropna(subset='Property Code').copy()
+performance_columns = ['Property Name', 'Property Code', 'Brand', '#Rooms', 'Activation Date', 'Revenue', 'Profit Margin', 'Gross Profit', 'Month of Reporting']
+performance_df = drop_na[performance_columns]
 
+#add flag and SPOR columns
 
 '''
-reassign brands/flags add location type 
+reassign brands/flags add location  
 remove all unnecessary columns
 create SPOR
 '''
@@ -44,7 +49,6 @@ customer input
 '''
 what the script needs to do
 
-take all inputs and categorize hotel
 calculate SPOR/ ROI? etc
 auto generate message containing all hotel information plus calculations to impulsify
 return SPOR and PM to customer on dashboard
@@ -53,7 +57,7 @@ return SPOR and PM to customer on dashboard
 
 '''
 robert - do you have actual occupancy rates for the hotels that are already customers?
-did you generate or create the excel file for brand/flag
+
 '''
 
 if __name__ == "__main__":
