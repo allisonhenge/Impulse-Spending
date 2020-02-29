@@ -7,21 +7,49 @@ pd.options.mode.chained_assignment = None
 
 import matplotlib
 import matplotlib.pyplot as plt
-%matplotlib inline
-plt.style.use("ggplot")
 
+sales_filepath='../../data/2019_sales_by_month.xlsx'
+brand_and_flag_filepath='../../data/hotel_brand_and_flag.xlsx' 
+flag_groupings_filepath='../data/flag_groupings.xlsx'
 #read excel files for desired timeframe in pandas dataframes
 sales_by_month = pd.read_excel(sales_filepath)
 brand_and_flag = pd.read_excel(brand_and_flag_filepath)
 flag_groupings = pd.read_excel(flag_groupings_filepath)
 
+#format brand_and_flag
+brand_and_flag.dropna(subset=['Property Code'])
+brand_columns = ['Property Name', 'Brand', 'Flag', 'Property Code', '#Rooms']
+current_hotel_brand_and_flags = brand_and_flag[brand_columns].copy()
+
 #create performance dataframe with desired columns
-drop_na = sales_by_month.dropna(subset='Property Code').copy()
-performance_columns = ['Property Name', 'Property Code', 'Brand', '#Rooms', 'Activation Date', 'Revenue', 'Profit Margin', 'Gross Profit', 'Month of Reporting']
-performance_df = drop_na[performance_columns]
+sales_by_month.dropna(subset=['Property Code'])
+performance_columns = ['Property Name', 'Property Code', 'Brand', '#Rooms', 'Activation Date', 'Revenue', 'Profit Margin', 'Gross Profit']
+performance_df = sales_by_month[performance_columns].copy()
 
 #add flag and SPOR columns
+property_code_column = list(performance_df['Property Code'])
+flag_column = []
+for code in property_code_column:
+    flag = current_hotel_brand_and_flags.loc[current_hotel_brand_and_flags['Property Code'] == code, 'Flag'].iat[0]
+    flag_column.append(flag)
+performance_df['Flag'] = flag_column
 
+avg_occupancy = 0.68 #industry average
+SPOR = [performance_df['Revenue']/(performance_df['#Rooms']*30.62*avg_occupancy)]
+SPOR_df = pd.DataFrame(SPOR).transpose()
+performance_df['SPOR'] = SPOR_df
+
+# unique_flags = list(current_hotel_brand_and_flags['Flag'].unique())
+
+# def get_brand_flags(brand):
+#     brand_flags_mask = flag_groupings['Brand'] == brand
+#     brand_df = flag_groupings[brand_flags_mask]
+#     brand_unique_flags = list(brand_df['Flag'].unique()) + ['Other']
+#     return brand_unique_flags
+
+# brand_and_flags = {}
+# for brand in unique_brands:
+#     brand_and_flags[brand] = get_brand_flags(brand)
 '''
 reassign brands/flags add location  
 remove all unnecessary columns
@@ -55,12 +83,10 @@ return SPOR and PM to customer on dashboard
 
 '''
 
-'''
-robert - do you have actual occupancy rates for the hotels that are already customers?
 
-'''
+#comparison_df = df.to_csv(r'../../data/clean_sales_data.csv', index = False)
 
 if __name__ == "__main__":
-    sales_filepath='../../capstone2/data/2019_sales_by_month.xlsx'
-    brand_and_flag_filepath='../../capstone2/data/hotel_brand_and_flag.xlsx'
+    sales_filepath='../../data/2019_sales_by_month.xlsx'
+    brand_and_flag_filepath='../../data/hotel_brand_and_flag.xlsx' 
     flag_groupings_filepath='../data/flag_groupings.xlsx'
