@@ -2,31 +2,53 @@ import numpy as np
 import pandas as pd
 from pandas import ExcelWriter
 from pandas import ExcelFile
-import openpyxl
-pd.options.mode.chained_assignment = None
-
-import matplotlib
-import matplotlib.pyplot as plt
 
 sales_filepath='../../data/2019_sales_by_month.xlsx'
 brand_and_flag_filepath='../../data/hotel_brand_and_flag.xlsx' 
-flag_groupings_filepath='../data/flag_groupings.xlsx'
+flag_groupings_filepath='../../data/flag-groupings.xlsx'
 #read excel files for desired timeframe in pandas dataframes
 sales_by_month = pd.read_excel(sales_filepath)
 brand_and_flag = pd.read_excel(brand_and_flag_filepath)
 flag_groupings = pd.read_excel(flag_groupings_filepath)
 
 #format brand_and_flag
-brand_and_flag.dropna(subset=['Property Code'])
+drop_na_brand = brand_and_flag.dropna(subset=['Property Code'])
 brand_columns = ['Property Name', 'Brand', 'Flag', 'Property Code', '#Rooms']
-current_hotel_brand_and_flags = brand_and_flag[brand_columns].copy()
+current_hotel_brand_and_flags = drop_na_brand[brand_columns].copy()
+
+#clean flag column
+current_hotel_brand_and_flags['Flag'].replace(to_replace='Hampton Inn & Suites', value='Hampton Inn & Suites by Hilton', inplace=True)
+current_hotel_brand_and_flags['Flag'].replace(to_replace='Hampton Inn', value='Hampton Inn by Hilton', inplace=True)
+current_hotel_brand_and_flags['Flag'].replace(to_replace='Embassy Hilton', value='Embassy Suites', inplace=True)
+current_hotel_brand_and_flags['Flag'].replace(to_replace='DoubleTree', value='DoubleTree by Hilton', inplace=True)
+current_hotel_brand_and_flags['Flag'].replace(to_replace='avid an IHG hotel', value='Avid Hotels', inplace=True)
+current_hotel_brand_and_flags['Flag'].replace(to_replace='Holiday Inn', value='Holiday Inn Hotels & Resorts', inplace=True)
+current_hotel_brand_and_flags['Flag'].replace(to_replace='Hilton Full Service', value='Hilton Hotels & Resorts', inplace=True)
+current_hotel_brand_and_flags['Flag'].replace(to_replace='EVEN', value='Even Hotels', inplace=True)
+current_hotel_brand_and_flags['Flag'].replace(to_replace='Intercontinental Hotels', value='InterContinental', inplace=True)
 
 #create performance dataframe with desired columns
-sales_by_month.dropna(subset=['Property Code'])
+drop_na = sales_by_month.dropna(subset=['Property Code'])
 performance_columns = ['Property Name', 'Property Code', 'Brand', '#Rooms', 'Activation Date', 'Revenue', 'Profit Margin', 'Gross Profit']
-performance_df = sales_by_month[performance_columns].copy()
+performance_df = drop_na[performance_columns].copy()
 
-#add flag and SPOR columns
+#clean up brand column
+performance_df['Brand'].replace(to_replace=['Tru B', 'TRU B', 'TRU b', 'Tru b', 'Home2', 'Homew', 'The S', 'Hampt', 'Doubl', 'Embas', 'Miram'], value='Hilto', inplace=True)
+performance_df['Brand'].replace(to_replace=['Stayb', 'Inter', 'IHG A', 'Holid', 'Avid ', 'Crown', 'Candl'], value='IHG', inplace=True)
+performance_df['Brand'].replace(to_replace= ['Aston', 'Delta', 'Renai'], value='Marri', inplace=True)
+performance_df['Brand'].replace(to_replace= ['Quali', 'Comfo'], value='Choic', inplace=True)
+performance_df['Brand'].replace(to_replace= 'La Qu', value='Wyndh', inplace=True)
+performance_df['Brand'].replace(to_replace= ['Blueb', 'River'], value='Apart', inplace=True)
+performance_df['Brand'].replace(to_replace= ['Platt'], value='Impul', inplace=True)
+performance_df['Brand'].replace(to_replace= ['Hammo'], value='Indep', inplace=True)
+
+# arr = ['LAXMA', 'LGBMY']
+# prop_mask1 = performance_df['Property Code'].isin(arr) 
+# performance_df['Brand'][prop_mask1] = 'Hilto'
+# prop_mask2 = performance_df['Property Code'] == 'IHG - ATLID'
+# performance_df['Brand'][prop_mask2] = 'IHG'
+
+#create flag
 property_code_column = list(performance_df['Property Code'])
 flag_column = []
 for code in property_code_column:
@@ -34,59 +56,40 @@ for code in property_code_column:
     flag_column.append(flag)
 performance_df['Flag'] = flag_column
 
+#create SPOR columns
 avg_occupancy = 0.68 #industry average
 SPOR = [performance_df['Revenue']/(performance_df['#Rooms']*30.62*avg_occupancy)]
 SPOR_df = pd.DataFrame(SPOR).transpose()
 performance_df['SPOR'] = SPOR_df
 
-# unique_flags = list(current_hotel_brand_and_flags['Flag'].unique())
+#create group and type columns
+group_column = []
+type_column = []
+industry_flags = list(flag_groupings['Flag'])
+for prop_flag in flag_column:
+    if prop_flag in industry_flags:
+        group = flag_groupings.loc[flag_groupings['Flag'] == prop_flag, 'Group'].iat[0]
+        hotel_type = flag_groupings.loc[flag_groupings['Flag'] == prop_flag, 'Type'].iat[0]
+    else:
+        group = 'Other'
+        hotel_type = 'Other'
+    group_column.append(group)
+    type_column.append(hotel_type)
+performance_df['Group'] = group_column
+performance_df['Type'] = type_column
+performance_df
 
-# def get_brand_flags(brand):
-#     brand_flags_mask = flag_groupings['Brand'] == brand
-#     brand_df = flag_groupings[brand_flags_mask]
-#     brand_unique_flags = list(brand_df['Flag'].unique()) + ['Other']
-#     return brand_unique_flags
+#drop all hotels with activation date after 2019-01-01
+m1 = performance_df['Activation Date'] <= '2019-01-01'
 
-# brand_and_flags = {}
-# for brand in unique_brands:
-#     brand_and_flags[brand] = get_brand_flags(brand)
-'''
-reassign brands/flags add location  
-remove all unnecessary columns
-create SPOR
-'''
-'''
-customer input 
-#1 - Brand dropdown limited to 7 large brands, independant and retail
-    -Hilton/IHG do comparisions within brand unless its better compared with each other dependant on location type
-    -Marriott/Choice/Wyndham/BestWestern/Independant all compared to a similar Hilton or IHG flag
-    -Apartment and Retail link straight to a email prompt
-#2 - Flag *dropdown dependant on dropdown #1. INCLUDE sub-flags where needed as separate type
-    -unless specified compare within similar flags under brand. There will be some cross-linked between brands
-#3 - Number of rooms
-    -will need to have a for loop for size specification... then +/- 10% for neighbors
-#4 - Location type dropdown independant(limit to major differences)
-    -luxury/select service/airport/convention center/full service/ etc
-#5 - average occupancy
-    -if not entered assume 68% as industry average
-#6 - current retail space profit or profit margin. 
-    -will need to have a dropdown for input type and then a field for entry
-#7 - 
-'''
+#drop all hotels wtih a profit margin > 0.74 or < 0.44
+m2 = performance_df['Profit Margin'] < 0.74
+m3 = performance_df['Profit Margin'] > 0.44
+comparison_hotels = performance_df[m1 & m2 & m3].copy()
 
-'''
-what the script needs to do
-
-calculate SPOR/ ROI? etc
-auto generate message containing all hotel information plus calculations to impulsify
-return SPOR and PM to customer on dashboard
-
-'''
-
-
-#comparison_df = df.to_csv(r'../../data/clean_sales_data.csv', index = False)
+comparison_hotels.to_csv('../data/clean_sales_data.csv', index = False)
 
 if __name__ == "__main__":
     sales_filepath='../../data/2019_sales_by_month.xlsx'
     brand_and_flag_filepath='../../data/hotel_brand_and_flag.xlsx' 
-    flag_groupings_filepath='../data/flag_groupings.xlsx'
+    flag_groupings_filepath='../../data/flag-groupings.xlsx'
