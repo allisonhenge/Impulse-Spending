@@ -8,9 +8,9 @@ import matplotlib.pyplot as plt
 
 class Hotel(object):
 
-    def __init__(self, flag_groupings, name, input_brand, input_flag, input_rooms, input_specialty_service, input_occupancy_rate, 
-                    input_revenue, revenue_period, input_profit, profit_type, profit_period):
-        self.flag_groupings = flag_groupings
+    def __init__(self, cust_array):
+        name, input_brand, input_flag, input_rooms, input_specialty_service, input_occupancy_rate, input_revenue, revenue_period, input_profit, profit_type, profit_period = cust_array
+        self.flag_groupings = pd.read_excel('../../../data/flag-groupings.xlsx')
         self.name = name
         self.brand = input_brand
         self.flag = input_flag
@@ -43,6 +43,8 @@ class Hotel(object):
         room_range = [rooms_minus_ten, rooms_plus_ten]
         return room_range
 
+    
+
     def get_size_subset(self):
         if self.num_rooms <= 0:
             size_subset = 0 
@@ -59,7 +61,6 @@ class Hotel(object):
         return size_subset 
     
     def hotel_type(self):
-        # brand_mask = flag_groupings['Brand'] == self.brand
         flag_mask = flag_groupings['Flag'] == input_flag
         if input_brand in ['Other', 'Retail', 'Apartment']:
             hotel_type = 'Not Hotel'
@@ -69,7 +70,6 @@ class Hotel(object):
         return hotel_type
     
     def get_group(self):
-        # brand_mask = flag_groupings['Brand'] == self.brand
         flag_mask = flag_groupings['Flag'] == self.flag
         if input_brand in ['Other', 'Retail', 'Apartment']:
             hotel_group = 'Not Hotel'
@@ -86,7 +86,7 @@ class Hotel(object):
         return specialty_service
 
     def get_occupancy_rate(self):
-        if input_occupancy_rate == 'Unsure':
+        if input_occupancy_rate == None:
             occupancy_rate = 0.68
         else:
             occupancy_rate = input_occupancy_rate
@@ -104,7 +104,7 @@ class Hotel(object):
         return revenue
 
     def get_profit_margin(self):
-        if input_profit == 0 or input_revenue == 0:
+        if input_profit == None or input_revenue == None:
             profit_margin = 'Not Currently Profitable'
         elif profit_type == 'Current Gross Profit':
             if profit_period == 'Yearly':
@@ -116,6 +116,8 @@ class Hotel(object):
         elif profit_type == 'Profit Margin':
             profit_margin = input_profit
         return profit_margin
+
+
 
 if __name__ == "__main__":
     name = 'The Make Believe Crowne'
@@ -129,9 +131,6 @@ if __name__ == "__main__":
     input_profit = 0.45
     profit_type = 'Profit Margin'
     profit_period = 'Monthly'
-    flag_groupings = pd.read_excel('../../data/flag-groupings.xlsx')
+    
 
-    classified_hotel = Hotel(flag_groupings, name, input_brand, input_flag, 
-                            input_rooms, input_specialty_service, input_occupancy_rate, input_revenue, revenue_period, 
-                            input_profit, profit_type, profit_period)
     
