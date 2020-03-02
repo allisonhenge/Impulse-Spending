@@ -42,11 +42,11 @@ performance_df['Brand'].replace(to_replace= ['Blueb', 'River'], value='Apart', i
 performance_df['Brand'].replace(to_replace= ['Platt'], value='Impul', inplace=True)
 performance_df['Brand'].replace(to_replace= ['Hammo'], value='Indep', inplace=True)
 
-# arr = ['LAXMA', 'LGBMY']
-# prop_mask1 = performance_df['Property Code'].isin(arr) 
-# performance_df['Brand'][prop_mask1] = 'Hilto'
-# prop_mask2 = performance_df['Property Code'] == 'IHG - ATLID'
-# performance_df['Brand'][prop_mask2] = 'IHG'
+arr = ['LAXMA', 'LGBMY']
+prop_mask1 = performance_df['Property Code'].isin(arr) 
+performance_df['Brand'][prop_mask1] = 'Hilto'
+prop_mask2 = performance_df['Property Code'] == 'IHG - ATLID'
+performance_df['Brand'][prop_mask2] = 'IHG'
 
 #create flag
 property_code_column = list(performance_df['Property Code'])
@@ -55,6 +55,25 @@ for code in property_code_column:
     flag = current_hotel_brand_and_flags.loc[current_hotel_brand_and_flags['Property Code'] == code, 'Flag'].iat[0]
     flag_column.append(flag)
 performance_df['Flag'] = flag_column
+
+#add size subset columns
+num_rooms_column = list(performance_df['#Rooms'])
+size_subset = []
+for num_rooms in num_rooms_column:
+    if num_rooms <= 0:
+        size_subset.append(0) 
+    elif 0 < num_rooms < 80:
+        size_subset.append(1)
+    elif 80 <= num_rooms < 100:
+        size_subset.append(2)
+    elif 100 <= num_rooms < 150:
+        size_subset.append(3)
+    elif 150 <= num_rooms < 200:
+        size_subset.append(4)
+    else:
+        size_subset.append(5)
+
+performance_df['Size Subset'] = size_subset
 
 #create SPOR columns
 avg_occupancy = 0.68 #industry average
@@ -78,6 +97,8 @@ for prop_flag in flag_column:
 performance_df['Group'] = group_column
 performance_df['Type'] = type_column
 performance_df
+
+
 
 #drop all hotels with activation date after 2019-01-01
 m1 = performance_df['Activation Date'] <= '2019-01-01'

@@ -1,0 +1,47 @@
+.App {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: rgba(57, 156,189);
+  background-size: cover;
+  text-align: center;
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.headerCont {
+  width: 100vw;
+  background-color: rgb(84, 88, 89);
+  font-size: 4.5rem;
+  color: aliceblue;
+}
+
+.title{
+  margin: .1em;
+
+
+}
+
+.inputTitle{
+  display: flex;
+  align-items: flex-start;
+  font-size: 1.5em;
+}
+
+.formCont {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5rem;
+  width: 50%;
+  padding-bottom: 3rem;
+}
+.dropdown{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
