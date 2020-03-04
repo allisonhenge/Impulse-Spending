@@ -3,25 +3,10 @@ import pandas as pd
 
 from pandas import ExcelWriter
 from pandas import ExcelFile
-from hotel_class import Hotel
+import json
 
 flag_groupings = pd.read_excel('../../../data/flag-groupings.xlsx')
 clean_sales_data = pd.read_csv('../../data/clean-sales-data.csv')
-name = 'The Make Believe Crowne'
-input_brand = 'IHG - International Hotel Group'
-input_flag = 'Crowne Plaza'
-input_rooms = 303
-input_specialty_type = 'None'
-input_occupancy_rate = 0.6
-input_revenue = 20018.67
-revenue_period = 'Quarterly'
-input_profit = 0.45
-profit_type = 'Profit Margin'
-profit_period = 'Monthly'
-
-cust_array = [name, input_brand, input_flag, input_rooms, input_specialty_type, input_occupancy_rate, input_revenue, revenue_period, input_profit, profit_type, profit_period]
-
-classified_hotel = Hotel(cust_array)
 
 def create_hotel_variables(classified_hotel):
     name = classified_hotel.name
@@ -42,11 +27,10 @@ def create_hotel_variables(classified_hotel):
                         occupancy_rate, current_revenue, current_profit_margin, current_SPOR] 
     return customer_inputs    
 
-customer_inputs = create_hotel_variables(classified_hotel)
 
 def get_comparison_df(customer_inputs):
     name, brand, flag, num_rooms, room_range, size_subset, hotel_type, hotel_group, specialty_type, \
-    occupancy_rate, current_revenue, current_profit_margin, current_SPOR = customer_inputs
+    occupancy_rate, current_revenue, current_profit, current_profit_margin, current_SPOR = customer_inputs
     
     big_brands = ['Hilto', 'IHG']
     if brand == 'Not Hotel':
@@ -72,7 +56,6 @@ def get_comparison_df(customer_inputs):
         comparison_df = other_brands_comparison_df
     return comparison_df
 
-comparison_df = get_comparison_df(customer_inputs)
 
 def compare_data(comparison_df, customer_inputs):
     name, brand, flag, num_rooms, room_range, size_subset, hotel_type, hotel_group, specialty_type, \
@@ -99,23 +82,24 @@ def compare_data(comparison_df, customer_inputs):
         else:
             results = [name, current_SPOR, est_SPOR, change_SPOR, current_revenue, est_revenue, \
                         change_revenue, current_profit_margin, est_profit_margin, change_profit_margin]
-        
-    return results, print(results)
-
+        with open('saved_results.json', 'w') as filehandle:
+            json.dump(results, filehandle)
+    return results
 
 if __name__ == "__main__":
-    name = 'The Make Believe Crowne'
-    input_brand = 'IHG - International Hotel Group'
-    input_flag = 'Crowne Plaza'
-    input_rooms = 303
-    input_specialty_type = 'None'
-    input_occupancy_rate = 0.6
-    input_revenue = 20018.67
-    revenue_period = 'Quarterly'
-    input_profit = 0.45
-    profit_type = 'Profit Margin'
-    profit_period = 'Monthly'
+    # name = 'The Make Believe Crowne'
+    # input_brand = 'IHG - International Hotel Group'
+    # input_flag = 'Crowne Plaza'
+    # input_rooms = 303
+    # input_specialty_type = 'None'
+    # input_occupancy_rate = 0.6
+    # input_revenue = 20018.67
+    # revenue_period = 'Quarterly'
+    # input_profit = 0.45
+    # profit_type = 'Profit Margin'
+    # profit_period = 'Monthly'
     
-    cust_array = [name, input_brand, input_flag, input_rooms, input_specialty_type, input_occupancy_rate, input_revenue, revenue_period, input_profit, profit_type, profit_period]
+    # cust_array = [name, input_brand, input_flag, input_rooms, input_specialty_type, input_occupancy_rate, input_revenue, revenue_period, input_profit, profit_type, profit_period]
 
-    classified_hotel = Hotel(cust_array)
+    # classified_hotel = Hotel(cust_array)
+    pass

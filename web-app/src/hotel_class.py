@@ -23,8 +23,8 @@ class Hotel(object):
         self.specialty_type = input_specialty_type
         self.occupancy_rate = self.get_occupancy_rate(input_occupancy_rate)
         self.current_revenue = self.get_monthly_revenue(input_revenue, revenue_period)
-        self.current_profit = self.get_profit(input_profit, profit_type, profit_period)
-        self.current_profit_margin = self.get_profit(input_profit, profit_type, profit_period)
+        self.current_profit, self.current_profit_margin = self.get_profit(input_profit, profit_type, profit_period)
+        #  = self.get_profit(input_profit, profit_type, profit_period)
         self.current_SPOR = self.get_SPOR()
 
     def comparison_brand(self, input_brand):
@@ -135,7 +135,8 @@ if __name__ == "__main__":
     profit_type = 'Profit Margin'
     profit_period = 'Monthly'
     
-    cust_array = [name, input_brand, input_flag, input_rooms, input_specialty_type, input_occupancy_rate, input_revenue, revenue_period, input_profit, profit_type, profit_period]
+    cust_array = [name, input_brand, input_flag, input_rooms, input_specialty_type, \
+    input_occupancy_rate, input_revenue, revenue_period, input_profit, profit_type, profit_period]
 
     classified_hotel = Hotel(cust_array)
     
