@@ -60,7 +60,7 @@ def compare_data(comparison_df, customer_inputs):
     name, brand, flag, num_rooms, room_range, size_subset, hotel_type, hotel_group, specialty_type, \
     occupancy_rate, current_revenue, current_profit, current_profit_margin, current_SPOR = customer_inputs
 
-    if comparison_df == 'Not Hotel Data' or current_revenue == 'No Current Retail Revenue' or \
+    if type(comparison_df) == str or current_revenue == 'No Current Retail Revenue' or \
         current_profit_margin == 'Not Currently Profitable' or \
         hotel_group == 'Not Hotel' or hotel_type == 'Not Hotel' or \
         specialty_type != 'None':
@@ -81,8 +81,8 @@ def compare_data(comparison_df, customer_inputs):
         else:
             results = [name, current_SPOR, est_SPOR, change_SPOR, current_revenue, est_revenue, \
                         change_revenue, current_profit_margin, est_profit_margin, change_profit_margin]
-        with open('saved_results.json', 'w') as filehandle:
-            json.dump(results, filehandle)
+        # with open('saved_results.json', 'w') as filehandle:
+        #     json.dump(results, filehandle)
     return results
 
 if __name__ == "__main__":

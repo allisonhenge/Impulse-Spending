@@ -24,7 +24,7 @@ def create_customer_results(customer_array):
     classified_hotel = Hotel(customer_array)
     customer_inputs = compare_data.create_hotel_variables(classified_hotel)
     comparison_df = compare_data.get_comparison_df(customer_inputs)
-    create_results = compare_data.compare_data(comparison_df, classified_hotel)
+    create_results = compare_data.compare_data(comparison_df, customer_inputs)
     return create_results
 results = create_customer_results(cust_array)
 print(results)
