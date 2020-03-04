@@ -108,7 +108,7 @@ m2 = performance_df['Profit Margin'] < 0.74
 m3 = performance_df['Profit Margin'] > 0.44
 comparison_hotels = performance_df[m1 & m2 & m3].copy()
 
-comparison_hotels.to_csv('../data/clean_sales_data.csv', index = False)
+comparison_hotels.to_csv('../data/clean-sales-data.csv', index = False)
 
 if __name__ == "__main__":
     sales_filepath='../../data/2019_sales_by_month.xlsx'

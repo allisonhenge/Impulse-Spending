@@ -9,20 +9,10 @@ flag_groupings = pd.read_excel('../../data/flag-groupings.xlsx')
 
 app = Flask(__name__)
 app.debug = True
+#when submit button hit on front end, run hotel_classifier.py
 
 @app.route('/', methods=['GET'])
-def cust_inputs(brand_and_flags, specialty_service, revenue_period, profit_type):
-    return create_cust_options(brand_and_flags, specialty_service, revenue_period, profit_type)
-
-#read in json
-
-@app.route('/', methods=['GET'])
-
-
-#input class_hotel to comparison.py
-
-# comparison.py output to flask
-# flask to react
+#read in json to output to React or html
 
 if __name__ == "__main__":
     flag_groupings_filepath='../../data/flag_groupings.xlsx'
