@@ -31,7 +31,7 @@ for brand in unique_brands:
     brand_and_flags[brand] = get_brand_flags(input_brand)
 
 specialty_service = ['None', 'Airport', 'Convention Center']
-revenue_period = ['Yearly', 'Quarterly', 'Monthly']
+revenue_period = ['Monthly', 'Quarterly', 'Yearly']
 profit_type = ['Current Profit', 'Profit Margin']
 
 create_cust_options = [brand_and_flags, specialty_service, revenue_period, profit_type]

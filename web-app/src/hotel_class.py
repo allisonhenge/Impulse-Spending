@@ -18,13 +18,13 @@ class Hotel(object):
         self.num_rooms = input_rooms
         self.room_range = self.get_room_range()
         self.size_subset = self.get_size_subset()
-        self.hotel_type = self.get_hotel_type(input_flag)#
+        self.hotel_type = self.get_hotel_type(input_flag)
         self.hotel_group = self.get_hotel_group()#
         self.specialty_type = input_specialty_type
         self.occupancy_rate = self.get_occupancy_rate(input_occupancy_rate)
         self.current_revenue = self.get_monthly_revenue(input_revenue, revenue_period)
-        self.current_profit, self.current_profit_margin = self.get_profit(input_profit, profit_type, profit_period)
-        #  = self.get_profit(input_profit, profit_type, profit_period)
+        self.current_profit = self.get_profit(input_revenue, input_profit, profit_type, profit_period)
+        self.current_profit_margin = self.current_profit/self.current_revenue
         self.current_SPOR = self.get_SPOR()
 
     def comparison_brand(self, input_brand):
@@ -61,7 +61,7 @@ class Hotel(object):
     
     def get_hotel_type(self, input_flag):
         flag_mask = self.flag_groupings['Flag'] == input_flag
-        if self.brand in ['Other', 'Retail', 'Apartment']:
+        if self.brand == 'Not Hotel':
             self.hotel_type = 'Not Hotel'
         else:
             type_df = self.flag_groupings[flag_mask]
@@ -71,7 +71,7 @@ class Hotel(object):
     
     def get_hotel_group(self):
         flag_mask = self.flag_groupings['Flag'] == self.flag
-        if input_brand in ['Other', 'Retail', 'Apartment']:
+        if self.brand == 'Not Hotel':
             self.hotel_group = 'Not Hotel'
         else:
             group_df = self.flag_groupings[flag_mask]
@@ -98,24 +98,19 @@ class Hotel(object):
             self.current_revenue = input_revenue
         return self.current_revenue
 
-    def get_profit(self, input_profit, profit_type, profit_period):
+    def get_profit(self, input_revenue, input_profit, profit_type, profit_period):
         if input_profit is None or input_revenue is None:
             self.current_profit = 'Not Currently Profitable'
-            self.current_profit_margin = 'Not Currently Profitable'
         elif profit_type == 'Current Gross Profit':
             if profit_period == 'Yearly':
                 self.current_profit = input_profit/12
-                self.current_profit_margin = (input_profit/12)/self.current_revenue
             elif profit_period == 'Quarterly':
                 self.current_profit = input_profit/4
-                self.current_profit_margin = (input_profit/4)/self.current_revenue
             else:
                 self.current_profit = input_profit
-                self.current_profit_margin = input_profit/self.current_revenue
         elif profit_type == 'Profit Margin':
-            self.current_profit = self.current_profit_margin*self.current_revenue
-            self.current_profit_margin = input_profit
-        return self.current_profit, self.current_profit_margin
+            self.current_profit = input_profit*self.current_revenue
+        return self.current_profit
 
     def get_SPOR(self):
         self.current_SPOR = (self.current_revenue/(self.num_rooms*30.62*self.occupancy_rate))

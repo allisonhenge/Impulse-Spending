@@ -24,7 +24,7 @@ def create_hotel_variables(classified_hotel):
     current_profit_margin = classified_hotel.current_profit_margin
     current_SPOR = classified_hotel.current_SPOR
     customer_inputs = [name, brand, flag, num_rooms, room_range, size_subset, hotel_type, hotel_group, specialty_type, \
-                        occupancy_rate, current_revenue, current_profit_margin, current_SPOR] 
+                        occupancy_rate, current_revenue, current_profit, current_profit_margin, current_SPOR] 
     return customer_inputs    
 
 
@@ -55,7 +55,6 @@ def get_comparison_df(customer_inputs):
         other_brands_comparison_df = clean_sales_data[type_mask & group_mask & size_mask].copy()
         comparison_df = other_brands_comparison_df
     return comparison_df
-
 
 def compare_data(comparison_df, customer_inputs):
     name, brand, flag, num_rooms, room_range, size_subset, hotel_type, hotel_group, specialty_type, \
