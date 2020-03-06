@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useState, useEffect, Fragment} from 'react';
 import { Dropdown} from 'react-bootstrap';
-import {brand_and_flags, specialty_service, revenue_period, profit_type} from '../input_fields.py'
 
 export  const CustInputPage = ({}) => {
     const [name, setName] = useState('')
@@ -24,10 +23,7 @@ export  const CustInputPage = ({}) => {
     }, [])
     
     const onSubmit = () => {
-
-
     }
-    console.log(brand_and_flags)
 
     const brandOption = (e) => {
 
@@ -52,7 +48,24 @@ export  const CustInputPage = ({}) => {
                         Choose your hotel brand
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-1">Hilton Worldwide</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">IHG</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Marriott International</Dropdown.Item>
+                        <Dropdown.Item href="#/action-1">Wyndham Hotels</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Hyatt</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Best Western</Dropdown.Item>
+                        <Dropdown.Item href="#/action-1">Other</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Retail</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Apartment</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+                <Dropdown>
+                <label className="inputTitle" >Flag of Hotel</label>
+                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                        Choose your hotel flag
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item href="#/action-1">Flags of your brand</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <div class="form-group">
@@ -65,9 +78,9 @@ export  const CustInputPage = ({}) => {
                         Choose your specialty
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                        <Dropdown.Item href="#/action-1">None</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Airport</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Convention Center</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <div class="form-group">
@@ -84,9 +97,9 @@ export  const CustInputPage = ({}) => {
                         Choose your revenue period
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                        <Dropdown.Item href="#/action-1">Yearly</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Quarterly</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Monthly</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <div class="form-group">
@@ -99,9 +112,8 @@ export  const CustInputPage = ({}) => {
                         Choose your profit type
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                        <Dropdown.Item href="#/action-1">Current Profit</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Profit Margin</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown>
@@ -110,9 +122,9 @@ export  const CustInputPage = ({}) => {
                         Choose your profit period
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                        <Dropdown.Item href="#/action-1">Yearly</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Quarterly</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Monthly</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <div class="form-group">

@@ -5,7 +5,6 @@ from pandas import ExcelFile
 import matplotlib
 import matplotlib.pyplot as plt
 
-
 class Hotel(object):
 
     def __init__(self, cust_array):
@@ -32,7 +31,7 @@ class Hotel(object):
             self.brand = 'Not Hotel'
         elif input_brand == 'Hilton':
             self.brand = 'Hilto' #brands have a to 5 character limit in sales data
-        elif input_brand == 'IHG - International Hotel Group':
+        elif input_brand == 'IHG':
             self.brand = 'IHG'
         else:
             self.brand = 'Other'

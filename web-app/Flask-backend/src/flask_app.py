@@ -8,7 +8,7 @@ import hotel_classifier
 # from hotel_class import Hotel
 flag_groupings = pd.read_excel('../../data/flag-groupings.xlsx')
 
-app = Flask("__main__")
+app = Flask("__name__")
 app.debug = True
 #when brand dropdown selected return values in dictionary
 @app.route('/')

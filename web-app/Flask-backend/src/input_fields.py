@@ -1,13 +1,14 @@
+# from flask_wtf import FlaskForm
+# from wtforms import StringField, SelectField
+# from wtforms.validators import DataRequired, Length, Email, 
+
 import numpy as np
 import pandas as pd
 from pandas import ExcelWriter
 from pandas import ExcelFile
 
 flag_groupings = pd.read_excel('../../data/flag-groupings.xlsx')
-
-# create brand_and_flags dictionary, brand:flags, dropdown #1 : dependant dropdown #2
 unique_brands = list(flag_groupings['Brand'].unique()) + ['Other', 'Retail', 'Apartment']
-
 def get_brand_flags(brand):
     brand_flags_mask = flag_groupings['Brand'] == brand
     brand_df = flag_groupings[brand_flags_mask]
