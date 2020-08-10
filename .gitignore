@@ -11,3 +11,4 @@ db_credentials.py
 flag_groupings.xlsx
 clean-sales-data.csv
 *.ipynb
+web-app/
